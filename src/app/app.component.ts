@@ -272,11 +272,16 @@ Demo and Mock Interview|15-minute demo, mock interview|Polish resume and GitHub|
     });
   }
 
-  onSubmit(): void {
+  onSubmit(isValid: boolean | null): void {
+    if (!isValid) {
+      this.formStatus = 'Please enter your name and a valid email address.';
+      return;
+    }
     const f = this.form;
-    const body = `Name: ${f.name}\nPhone: ${f.phone}\nExperience: ${f.experience}\nRole: ${f.role}\nBatch: ${f.batch}\n\n${f.message}`;
-    this.formStatus = 'Opening your email app to send this enquiry...';
-    window.location.href = `mailto:${this.email}?subject=${encodeURIComponent('Training enquiry from ' + f.name)}&body=${encodeURIComponent(body)}`;
+    const body = `Name: ${f.name}\nEmail: ${f.email}\nPhone: ${f.phone}\nExperience: ${f.experience}\nRole: ${f.role}\nBatch: ${f.batch}\n\n${f.message}`;
+    const subject = 'Enrollment request from ' + f.name;
+    this.formStatus = 'Opening your email app to send this enrollment request...';
+    window.location.href = `mailto:${this.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
   scrollToTop(): void {
