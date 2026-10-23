@@ -44,6 +44,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   formStatus = '';
   sending = false;
   botcheck = false;
+  submitted = false;
+  submittedName = '';
 
   experienceOptions = ['No IT experience', 'Less than 1 year in IT', '1 to 3 years in IT', '3+ years in IT/DevOps/Cloud'];
   batchOptions = ['Weekday evenings', 'Weekends', 'Not sure yet'];
@@ -286,7 +288,9 @@ Demo and Mock Interview|15-minute demo, mock interview|Polish resume and GitHub|
     this.formStatus = 'Sending your enrollment request...';
     try {
       await this.sendEnrollment();
-      this.formStatus = 'Thank you! Your enrollment request has been sent. We will get back to you within 24 hours.';
+      this.submittedName = this.form.name;
+      this.submitted = true;
+      this.formStatus = '';
       this.resetForm();
     } catch (error) {
       console.error('Enrollment submission failed', error);
@@ -295,6 +299,16 @@ Demo and Mock Interview|15-minute demo, mock interview|Polish resume and GitHub|
     } finally {
       this.sending = false;
     }
+  }
+
+  get whatsappLink(): string {
+    const text = 'Hi, I am interested in the 90-day DevOps + AWS training. Please share batch details.';
+    return `https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(text)}`;
+  }
+
+  startNewEnquiry(): void {
+    this.submitted = false;
+    this.submittedName = '';
   }
 
   openWhatsApp(): void {
