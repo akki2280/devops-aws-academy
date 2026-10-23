@@ -30,6 +30,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   siteName = 'TechUp Academy';
   tagline = 'Learn. Build. Grow.';
   email = 'akhil.tech365@gmail.com';
+  whatsappNumber = '918792864326';
+  web3formsAccessKey = 'a4ce4b53-44d3-41a4-bac3-df469cc47d2d';
   year = new Date().getFullYear();
 
   navOpen = false;
@@ -40,6 +42,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   form = { name: '', email: '', phone: '', experience: 'No IT experience', role: '', batch: 'Weekday evenings', message: '' };
   formStatus = '';
+  sending = false;
+  botcheck = false;
 
   experienceOptions = ['No IT experience', 'Less than 1 year in IT', '1 to 3 years in IT', '3+ years in IT/DevOps/Cloud'];
   batchOptions = ['Weekday evenings', 'Weekends', 'Not sure yet'];
@@ -272,16 +276,74 @@ Demo and Mock Interview|15-minute demo, mock interview|Polish resume and GitHub|
     });
   }
 
-  onSubmit(isValid: boolean | null): void {
+  async onSubmit(isValid: boolean | null): Promise<void> {
     if (!isValid) {
       this.formStatus = 'Please enter your name and a valid email address.';
       return;
     }
+    if (this.sending) return;
+    this.sending = true;
+    this.formStatus = 'Sending your enrollment request...';
+    try {
+      await this.sendEnrollment();
+      this.formStatus = 'Thank you! Your enrollment request has been sent. We will get back to you within 24 hours.';
+      this.resetForm();
+    } catch (error) {
+      console.error('Enrollment submission failed', error);
+      this.formStatus = 'Could not send online. Opening your email app instead...';
+      this.openEmailApp();
+    } finally {
+      this.sending = false;
+    }
+  }
+
+  openWhatsApp(): void {
+    const url = `https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(this.enrollmentText())}`;
+    window.open(url, '_blank', 'noopener');
+  }
+
+  private async sendEnrollment(): Promise<void> {
     const f = this.form;
-    const body = `Name: ${f.name}\nEmail: ${f.email}\nPhone: ${f.phone}\nExperience: ${f.experience}\nRole: ${f.role}\nBatch: ${f.batch}\n\n${f.message}`;
-    const subject = 'Enrollment request from ' + f.name;
-    this.formStatus = 'Opening your email app to send this enrollment request...';
-    window.location.href = `mailto:${this.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: this.web3formsAccessKey,
+        subject: this.enrollmentSubject(),
+        from_name: this.siteName,
+        replyto: f.email,
+        botcheck: this.botcheck,
+        name: f.name,
+        email: f.email,
+        phone: f.phone,
+        experience: f.experience,
+        role: f.role,
+        batch: f.batch,
+        message: f.message
+      })
+    });
+    const result = await response.json();
+    if (!response.ok || !result.success) throw new Error(result.message);
+  }
+
+  private openEmailApp(): void {
+    const subject = encodeURIComponent(this.enrollmentSubject());
+    const body = encodeURIComponent(this.enrollmentText());
+    window.location.href = `mailto:${this.email}?subject=${subject}&body=${body}`;
+  }
+
+  private enrollmentSubject(): string {
+    const f = this.form;
+    return `New DevOps & AWS enrollment: ${f.name} (${f.batch}, ${f.experience})`;
+  }
+
+  private enrollmentText(): string {
+    const f = this.form;
+    return `Name: ${f.name}\nEmail: ${f.email}\nPhone: ${f.phone}\nExperience: ${f.experience}\nRole: ${f.role}\nBatch: ${f.batch}\n\n${f.message}`;
+  }
+
+  private resetForm(): void {
+    this.form = { ...this.form, name: '', email: '', phone: '', role: '', message: '' };
   }
 
   scrollToTop(): void {

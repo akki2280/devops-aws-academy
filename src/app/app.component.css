@@ -667,7 +667,8 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 4px var(--glow);
   outline: none;
 }
-.form-actions { margin-top: 24px; }
+.form-actions { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; }
+.botcheck { display: none; }
 .form-status { margin-top: 12px; color: var(--ac2); font-size: .9rem; }
 
 /* ============================================================

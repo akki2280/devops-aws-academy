@@ -256,7 +256,7 @@
         <h3 class="form-heading">Send an Enquiry</h3>
         <div class="form-row">
           <div class="form-field"><label>Name</label><input [(ngModel)]="form.name" name="name" required placeholder="Your full name"></div>
-          <div class="form-field"><label>Email</label><input [(ngModel)]="form.email" name="email" type="email" required placeholder="you@example.com"></div>
+          <div class="form-field"><label>Email</label><input [(ngModel)]="form.email" name="email" type="email" required email placeholder="you@example.com"></div>
         </div>
         <div class="form-row">
           <div class="form-field"><label>Phone</label><input [(ngModel)]="form.phone" name="phone" type="tel" placeholder="+91 XXXXX XXXXX"></div>
@@ -275,7 +275,11 @@
           </div>
         </div>
         <div class="form-field"><label>Message</label><textarea [(ngModel)]="form.message" name="message" rows="4" placeholder="Any questions or goals you'd like to share..."></textarea></div>
-        <div class="form-actions"><button class="btn" type="submit">Request Course Details</button></div>
+        <input type="checkbox" [(ngModel)]="botcheck" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off">
+        <div class="form-actions">
+          <button class="btn" type="submit" [disabled]="sending">{{ sending ? 'Sending...' : 'Request Course Details' }}</button>
+          <button class="btn btn-outline" type="button" (click)="openWhatsApp()">Chat on WhatsApp</button>
+        </div>
         <p class="form-status" *ngIf="formStatus">{{formStatus}}</p>
       </form>
 
