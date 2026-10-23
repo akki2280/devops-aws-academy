@@ -1,0 +1,318 @@
+<!-- Back to top -->
+<button class="back-to-top" [class.visible]="showBackToTop" (click)="scrollToTop()" aria-label="Back to top">&uarr;</button>
+
+<!-- ======== HEADER ======== -->
+<header>
+  <div class="wrap">
+    <a class="brand" href="#home">
+      {{siteName}}
+      <em>{{tagline}}</em>
+    </a>
+
+    <button class="hamburger" [class.active]="navOpen" (click)="toggleNav()" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav [class.open]="navOpen">
+      <a href="#home" (click)="closeNav()" [class.active]="activeSection === 'home'">Home</a>
+      <a href="#program" (click)="closeNav()" [class.active]="activeSection === 'program'">Program</a>
+      <a href="#curriculum" (click)="closeNav()" [class.active]="activeSection === 'curriculum'">Curriculum</a>
+      <a href="#labs" (click)="closeNav()" [class.active]="activeSection === 'labs'">Labs</a>
+      <a href="#capstone" (click)="closeNav()" [class.active]="activeSection === 'capstone'">Capstone</a>
+      <a href="#tech" (click)="closeNav()" [class.active]="activeSection === 'tech'">Technologies</a>
+      <a href="#interview" (click)="closeNav()" [class.active]="activeSection === 'interview'">Interview Prep</a>
+      <a href="#faq" (click)="closeNav()" [class.active]="activeSection === 'faq'">FAQ</a>
+      <a href="#contact" (click)="closeNav()" [class.active]="activeSection === 'contact'">Contact</a>
+    </nav>
+
+    <a class="btn btn-sm header-cta" href="#contact">Enroll Now</a>
+  </div>
+</header>
+
+<!-- ======== HERO ======== -->
+<section id="home" class="hero-section">
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-text">
+        <span class="badge">DevOps + AWS Cloud Training Academy</span>
+        <h1>Become a Job-Ready DevOps &amp; AWS Cloud Engineer in <span class="accent">90 Days</span></h1>
+        <p class="sub">A structured, lab-first program that takes you from Linux and AWS basics to Kubernetes, Terraform, CI/CD, observability and security, ending with a production-style capstone and interview preparation.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#curriculum">View Curriculum</a>
+          <a class="btn btn-outline" href="#contact">Join the Training</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="terminal">
+          <div class="term-dots"><span></span><span></span><span></span></div>
+          <div class="term-body">
+            <p><span class="dim">$</span> git push origin main</p>
+            <p class="green">[ok] pipeline passed</p>
+            <p><span class="dim">$</span> terraform apply</p>
+            <p class="green">[ok] VPC + EKS + RDS ready</p>
+            <p><span class="dim">$</span> kubectl get pods</p>
+            <p class="green">app-7d9f  1/1  Running</p>
+            <p><span class="dim">$</span> ./day90 --status</p>
+            <p class="orange">[ok] job-ready</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="stat-value">90</span><span class="stat-label">Days</span></div>
+      <div class="stat"><span class="stat-value">90+</span><span class="stat-label">Hands-on Labs</span></div>
+      <div class="stat"><span class="stat-value">10</span><span class="stat-label">Real Projects</span></div>
+      <div class="stat"><span class="stat-value">100%</span><span class="stat-label">Interview Ready</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== PROGRAM ======== -->
+<section id="program" class="alt-bg">
+  <div class="wrap">
+    <span class="badge">The Program</span>
+    <h2>Built for people who want to be <span class="accent">hired</span>, not just certified</h2>
+    <div class="grid">
+      <div class="card" *ngFor="let item of why">
+        <h3>{{item.title}}</h3>
+        <p>{{item.desc}}</p>
+      </div>
+    </div>
+    <h3 class="mt-48">Who it is for</h3>
+    <div class="grid">
+      <div class="card" *ngFor="let item of who">
+        <h3>{{item.title}}</h3>
+        <p>{{item.desc}}</p>
+      </div>
+    </div>
+    <h3 class="mt-48">How we teach</h3>
+    <p class="muted">Each session is about 2 hours: a short concept briefing, then guided labs, then a break-it-and-fix-it challenge. The design target is roughly 25% theory and 75% hands-on work, with weekly assessments and a readiness checkpoint at the end of every phase.</p>
+    <p class="muted"><strong>Prerequisites:</strong> a laptop with 8 GB RAM (16 GB preferred), a basic comfort with computers, and an AWS and GitHub account (setup help provided). No prior DevOps knowledge is required.</p>
+  </div>
+</section>
+
+<!-- ======== CURRICULUM ======== -->
+<section id="curriculum">
+  <div class="wrap">
+    <span class="badge">Day 0 to Day 90</span>
+    <h2>90-Day Curriculum</h2>
+    <p class="muted mb-24">Ten phases, each ending with a checkpoint. Open a phase, then a day, to see the lab, assignment and interview focus.</p>
+    <div class="search-box">
+      <span class="search-icon">&#128269;</span>
+      <input type="search" placeholder="Search curriculum... e.g. Terraform, VPC, Jenkins" [(ngModel)]="searchQuery" (input)="onSearch()">
+    </div>
+    <div class="curriculum-list">
+      <div *ngFor="let phase of phases; let i = index" class="phase" [class.hidden]="phase.hidden">
+        <button class="phase-header" (click)="phase.open = !phase.open" [class.open]="phase.open">
+          <span class="phase-toggle">{{phase.open ? '−' : '+'}}</span>
+          <span class="phase-title">Phase {{i + 1}}: {{phase.name}}</span>
+          <span class="phase-range">Days {{phase.from}}–{{phase.to}}</span>
+        </button>
+        <div class="phase-body" *ngIf="phase.open">
+          <p class="phase-goal">{{phase.goal}}</p>
+          <div *ngFor="let day of phase.days" class="day-item" [class.hidden]="day.hidden">
+            <button class="day-header" (click)="day.open = !day.open" [class.open]="day.open">
+              <span class="day-toggle">{{day.open ? '−' : '+'}}</span>
+              Day {{day.n}}: {{day.t}}
+            </button>
+            <div class="day-body" *ngIf="day.open">
+              <div class="day-grid">
+                <div class="day-detail" *ngIf="day.tp"><span class="dt">Topics</span><span class="dd">{{day.tp}}</span></div>
+                <div class="day-detail"><span class="dt">Hands-on lab</span><span class="dd">{{day.lab}}</span></div>
+                <div class="day-detail"><span class="dt">Assignment</span><span class="dd">{{day.hw}}</span></div>
+                <div class="day-detail"><span class="dt">Interview focus</span><span class="dd">{{day.q}}</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== LABS ======== -->
+<section id="labs" class="alt-bg">
+  <div class="wrap">
+    <span class="badge">Practice over theory</span>
+    <h2>Hands-on Labs</h2>
+    <p class="muted mb-24">Every day has a hands-on lab, and every phase adds a project and a troubleshooting challenge. Open a phase to see all its labs.</p>
+    <div class="curriculum-list">
+      <div *ngFor="let lp of labPhases; let i = index" class="phase">
+        <button class="phase-header" (click)="lp.open = !lp.open" [class.open]="lp.open">
+          <span class="phase-toggle">{{lp.open ? '−' : '+'}}</span>
+          <span class="phase-title">Phase {{i + 1}}: {{lp.name}}</span>
+          <span class="phase-range">{{lp.dailyLabs.length}} daily labs + project</span>
+        </button>
+        <div class="phase-body" *ngIf="lp.open">
+          <div class="lab-phase-meta">
+            <p><strong>Phase project:</strong> {{lp.project}}</p>
+            <p><strong>Troubleshooting challenge:</strong> {{lp.challenge}}</p>
+          </div>
+          <ul class="lab-day-list">
+            <li *ngFor="let d of lp.dailyLabs">Day {{d.n}}: {{d.lab}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== CAPSTONE ======== -->
+<section id="capstone">
+  <div class="wrap">
+    <span class="badge">End-to-end project</span>
+    <h2>Capstone: a production-style delivery platform</h2>
+    <p class="muted mb-24">You build and defend a complete path from code to monitored production on AWS.</p>
+    <div class="flow-pipeline">
+      <ng-container *ngFor="let step of flow; let last = last">
+        <span class="flow-node">{{step}}</span>
+        <span class="flow-arrow" *ngIf="!last">&rarr;</span>
+      </ng-container>
+    </div>
+    <div class="grid grid-2 mt-32">
+      <div class="card">
+        <h3>What you build</h3>
+        <ul class="check-list">
+          <li>Infrastructure as code on AWS</li>
+          <li>A CI/CD pipeline with quality and security gates</li>
+          <li>A containerized app on Kubernetes/EKS</li>
+          <li>Dashboards, alerts and runbooks</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Skills it demonstrates</h3>
+        <ul class="check-list">
+          <li>Automation and repeatability</li>
+          <li>Secure delivery practices</li>
+          <li>Troubleshooting under pressure</li>
+          <li>Clear documentation and presentation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== TECHNOLOGIES ======== -->
+<section id="tech" class="alt-bg">
+  <div class="wrap center">
+    <span class="badge">Toolchain</span>
+    <h2>Technologies you will learn</h2>
+    <div class="chips">
+      <span class="chip" *ngFor="let t of tech"><b>&gt;_</b>{{t}}</span>
+    </div>
+  </div>
+</section>
+
+<!-- ======== INTERVIEW ======== -->
+<section id="interview">
+  <div class="wrap">
+    <span class="badge">Get hired</span>
+    <h2>Interview Preparation</h2>
+    <p class="muted mb-24">Every day lists interview questions for that topic, and the final days run mock interviews and resume reviews.</p>
+    <div class="grid">
+      <div class="card" *ngFor="let item of interviewItems">
+        <h3>{{item.title}}</h3>
+        <p>{{item.desc}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== CONTACT ======== -->
+<section id="contact" class="contact-section">
+  <div class="wrap">
+    <span class="badge">Join the next batch</span>
+    <h2>Reserve Your Seat</h2>
+    <p class="muted mb-24">Tell us about your background and we will reply with batch dates, fees and a suitable learning path.</p>
+    <div class="contact-layout">
+
+      <div class="contact-sidebar">
+        <div class="contact-card">
+          <div class="contact-avatar">A</div>
+          <h3>Akhil</h3>
+          <p class="contact-role">DevOps &amp; AWS Cloud Trainer</p>
+        </div>
+        <div class="contact-details">
+          <a href="mailto:akhil.tech365@gmail.com" class="contact-link">
+            <span class="contact-icon">&#9993;</span>
+            <span>
+              <span class="contact-label">Email</span>
+              <span class="contact-value">akhil.tech365@gmail.com</span>
+            </span>
+          </a>
+          <a href="tel:+918792864326" class="contact-link">
+            <span class="contact-icon">&#9742;</span>
+            <span>
+              <span class="contact-label">Phone</span>
+              <span class="contact-value">+91 8792864326</span>
+            </span>
+          </a>
+        </div>
+        <p class="contact-note">Reach out directly or fill in the form — we will get back to you within 24 hours.</p>
+      </div>
+
+      <form class="form-card" (ngSubmit)="onSubmit()">
+        <h3 class="form-heading">Send an Enquiry</h3>
+        <div class="form-row">
+          <div class="form-field"><label>Name</label><input [(ngModel)]="form.name" name="name" required placeholder="Your full name"></div>
+          <div class="form-field"><label>Email</label><input [(ngModel)]="form.email" name="email" type="email" required placeholder="you@example.com"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-field"><label>Phone</label><input [(ngModel)]="form.phone" name="phone" type="tel" placeholder="+91 XXXXX XXXXX"></div>
+          <div class="form-field"><label>Experience</label>
+            <select [(ngModel)]="form.experience" name="experience">
+              <option *ngFor="let opt of experienceOptions" [value]="opt">{{opt}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field"><label>Current role</label><input [(ngModel)]="form.role" name="role" placeholder="e.g. Student, Developer"></div>
+          <div class="form-field"><label>Preferred batch</label>
+            <select [(ngModel)]="form.batch" name="batch">
+              <option *ngFor="let opt of batchOptions" [value]="opt">{{opt}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field"><label>Message</label><textarea [(ngModel)]="form.message" name="message" rows="4" placeholder="Any questions or goals you'd like to share..."></textarea></div>
+        <div class="form-actions"><button class="btn" type="submit">Request Course Details</button></div>
+        <p class="form-status" *ngIf="formStatus">{{formStatus}}</p>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<!-- ======== FAQ ======== -->
+<section id="faq" class="alt-bg">
+  <div class="wrap">
+    <span class="badge">Questions</span>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <div class="faq-item" *ngFor="let item of faqItems" [class.open]="item.open">
+        <button class="faq-q" (click)="item.open = !item.open">
+          <span class="faq-toggle">{{item.open ? '−' : '+'}}</span>
+          {{item.q}}
+        </button>
+        <div class="faq-a" *ngIf="item.open"><p>{{item.a}}</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== CTA ======== -->
+<section class="cta-section">
+  <div class="wrap center">
+    <h2>Ready to become job-ready?</h2>
+    <p class="muted">Seats are limited per batch so every learner gets feedback.</p>
+    <a class="btn btn-lg" href="#contact">Reserve Your Seat</a>
+  </div>
+</section>
+
+<!-- ======== FOOTER ======== -->
+<footer>
+  <div class="wrap footer-row">
+    <div class="footer-brand">{{siteName}}<em>{{tagline}}</em></div>
+    <p>&copy; {{year}} {{siteName}}. All rights reserved.</p>
+  </div>
+</footer>
