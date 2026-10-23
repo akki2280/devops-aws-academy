@@ -670,6 +670,20 @@ input:focus, select:focus, textarea:focus {
 .form-actions { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; }
 .botcheck { display: none; }
 .form-status { margin-top: 12px; color: var(--ac2); font-size: .9rem; }
+.form-success { text-align: left; }
+.success-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--glow);
+  color: var(--ac);
+  font-size: 1.8rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+}
+.next-steps { margin: 12px 0 16px; padding-left: 20px; color: var(--tx2); line-height: 1.8; }
 
 /* ============================================================
    FAQ
@@ -789,6 +803,23 @@ footer p { color: var(--mu); font-size: .88rem; }
 }
 .back-to-top:hover { box-shadow: 0 8px 28px rgba(255,107,74,.45); }
 
+.whatsapp-float {
+  position: fixed;
+  bottom: 86px;
+  right: 24px;
+  z-index: 90;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #25D366;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 16px rgba(37,211,102,.35);
+  transition: transform .2s, box-shadow .2s;
+}
+.whatsapp-float:hover { transform: scale(1.08); box-shadow: 0 8px 28px rgba(37,211,102,.5); }
+
 /* ============================================================
    TABLET  ( <= 900px )
    ============================================================ */
@@ -843,6 +874,7 @@ footer p { color: var(--mu); font-size: .88rem; }
   .form-card { padding: 24px; }
   .footer-row { flex-direction: column; text-align: center; }
   .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+  .whatsapp-float { bottom: 68px; right: 13px; width: 46px; height: 46px; }
   .faq-a { padding-left: 22px; }
 }
 
